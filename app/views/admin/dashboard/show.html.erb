@@ -1,0 +1,27 @@
+<h1 class="text-2xl font-bold mb-6">ダッシュボード</h1>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+  <% @transfer_counts.each do |status, count| %>
+    <div class="bg-white rounded-lg shadow p-4">
+      <div class="text-sm text-gray-500">振込 / <%= status %></div>
+      <div class="text-2xl font-bold"><%= count %></div>
+    </div>
+  <% end %>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+  <% @invoice_counts.each do |status, count| %>
+    <div class="bg-white rounded-lg shadow p-4">
+      <div class="text-sm text-gray-500">請求書 / <%= status %></div>
+      <div class="text-2xl font-bold"><%= count %></div>
+    </div>
+  <% end %>
+</div>
+<div class="grid grid-cols-2 gap-4">
+  <div class="bg-white rounded-lg shadow p-4">
+    <div class="text-sm text-gray-500">Outbox未処理</div>
+    <div class="text-2xl font-bold"><%= @outbox_pending %></div>
+  </div>
+  <div class="bg-white rounded-lg shadow p-4">
+    <div class="text-sm text-gray-500">Outbox失敗</div>
+    <div class="text-2xl font-bold text-red-600"><%= @outbox_failed %></div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    gitleaks:
+      run: gitleaks detect --source . --no-banner --no-color
+      fail_text: "機密情報が検出されました"
+    stree:
+      glob: "*.rb"
+      run: bundle exec stree check {staged_files}
+    rubocop:
+      glob: "*.rb"
+      run: bundle exec rubocop --force-exclusion {staged_files}
+    minitest:
+      run: bundle exec rails test
+      fail_text: "テストが失敗しました"

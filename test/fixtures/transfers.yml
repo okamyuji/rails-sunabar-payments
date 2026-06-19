@@ -1,0 +1,17 @@
+pending_transfer:
+  id: !binary |-
+    AZOl4bLD1OX2p7jJ0OHytA==
+  account_id: !binary |-
+    AZOl4bLD1OX2p7jJ0OHyow==
+  app_request_id: "REQ-FIXTURE-001"
+  api_idempotency_key: "c0a80164-0001-7000-8000-000000000001"
+  status: "pending"
+  amount: 10000
+  destination_bank_code: "0310"
+  destination_branch_code: "101"
+  destination_account_number: "1234567"
+  destination_account_type: "ordinary"
+  destination_account_name: "テスト振込先"
+  transfer_date: <%= Date.current %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

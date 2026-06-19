@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require "net/http"
+require "json"
+require "uri"
+
+token = ENV.fetch("SUNABAR_PERSONAL_TOKEN") { abort "SUNABAR_PERSONAL_TOKEN未設定" }
+uri = URI("https://api.sunabar.gmo-aozora.com/personal/v1/accounts")
+
+http = Net::HTTP.new(uri.host, uri.port)
+http.use_ssl = true
+http.open_timeout = 5
+http.read_timeout = 5
+
+req = Net::HTTP::Get.new(uri)
+req["Authorization"] = "Bearer #{token}"
+
+res = http.request(req)
+puts JSON.pretty_generate(
+  {status: res.code, body: JSON.parse(res.body), timestamp: Time.now.iso8601}
+)
+exit(res.code.to_i == 200 ? 0 : 1)

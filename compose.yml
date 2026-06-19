@@ -1,0 +1,51 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: rails_sunabar_payments_development
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  app:
+    build: .
+    command: bundle exec puma -C config/puma.rb
+    environment:
+      RUBY_YJIT_ENABLE: "1"
+      DB_HOST: db
+      DB_PASSWORD: password
+      RAILS_ENV: development
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+
+  worker:
+    build: .
+    command: bundle exec rails solid_queue:start
+    environment:
+      RUBY_YJIT_ENABLE: "1"
+      DB_HOST: db
+      DB_PASSWORD: password
+      RAILS_ENV: development
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+
+volumes:
+  mysql_data:
+  bundle_cache:

@@ -1,0 +1,39 @@
+<h1 class="text-2xl font-bold mb-4">振込詳細</h1>
+<div class="bg-white rounded-lg shadow p-6 mb-6">
+  <dl class="grid grid-cols-2 gap-4">
+    <div><dt class="text-sm text-gray-500">ID</dt><dd><%= @transfer.id %></dd></div>
+    <div><dt class="text-sm text-gray-500">状態</dt><dd><span class="px-2 py-1 rounded text-xs bg-gray-200"><%= @transfer.status %></span></dd></div>
+    <div><dt class="text-sm text-gray-500">金額</dt><dd><%= number_with_delimiter(@transfer.amount) %>円</dd></div>
+    <div><dt class="text-sm text-gray-500">振込日</dt><dd><%= @transfer.transfer_date %></dd></div>
+    <div><dt class="text-sm text-gray-500">振込先口座</dt><dd><%= @transfer.destination_bank_code %>-<%= @transfer.destination_branch_code %>-<%= @transfer.destination_account_number %></dd></div>
+    <div><dt class="text-sm text-gray-500">振込先名義</dt><dd><%= @transfer.destination_account_name %></dd></div>
+    <div><dt class="text-sm text-gray-500">冪等キー</dt><dd class="text-xs"><%= @transfer.app_request_id %></dd></div>
+    <div><dt class="text-sm text-gray-500">sunabar受付番号</dt><dd><%= @transfer.sunabar_apply_no || "-" %></dd></div>
+    <% if @transfer.last_error.present? %>
+      <div class="col-span-2"><dt class="text-sm text-gray-500">最終エラー</dt><dd class="text-red-600"><%= @transfer.last_error %></dd></div>
+    <% end %>
+  </dl>
+</div>
+<h2 class="text-xl font-bold mb-3">関連Outboxイベント</h2>
+<table class="w-full bg-white rounded-lg shadow">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="px-4 py-2 text-left">ID</th>
+      <th class="px-4 py-2 text-left">イベント種別</th>
+      <th class="px-4 py-2 text-left">状態</th>
+      <th class="px-4 py-2 text-left">試行</th>
+      <th class="px-4 py-2 text-left">作成日時</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @outbox_events.each do |e| %>
+      <tr class="border-t">
+        <td class="px-4 py-2"><%= e.id %></td>
+        <td class="px-4 py-2"><%= e.event_type %></td>
+        <td class="px-4 py-2"><%= e.status %></td>
+        <td class="px-4 py-2"><%= e.attempt_count %>/<%= e.max_attempts %></td>
+        <td class="px-4 py-2"><%= l(e.created_at, format: :short) rescue e.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

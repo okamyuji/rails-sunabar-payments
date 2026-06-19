@@ -1,0 +1,32 @@
+<h1 class="text-2xl font-bold mb-4">振込一覧</h1>
+<div class="mb-4 flex gap-2">
+  <%= link_to "全て", admin_transfers_path, class: "px-3 py-1 rounded #{params[:status].blank? ? 'bg-gray-900 text-white' : 'bg-gray-200'}" %>
+  <% %w[pending requested awaiting_approval approved settled failed].each do |s| %>
+    <%= link_to s, admin_transfers_path(status: s), class: "px-3 py-1 rounded #{params[:status] == s ? 'bg-gray-900 text-white' : 'bg-gray-200'}" %>
+  <% end %>
+</div>
+<table class="w-full bg-white rounded-lg shadow">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="px-4 py-2 text-left">ID</th>
+      <th class="px-4 py-2 text-left">状態</th>
+      <th class="px-4 py-2 text-right">金額</th>
+      <th class="px-4 py-2 text-left">振込先</th>
+      <th class="px-4 py-2 text-left">振込日</th>
+      <th class="px-4 py-2 text-left">作成日時</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transfers.each do |t| %>
+      <tr class="border-t hover:bg-gray-50">
+        <td class="px-4 py-2"><%= link_to t.id.to_s[0..7], admin_transfer_path(t), class: "text-blue-600 hover:underline" %></td>
+        <td class="px-4 py-2"><span class="px-2 py-1 rounded text-xs bg-gray-200"><%= t.status %></span></td>
+        <td class="px-4 py-2 text-right"><%= number_with_delimiter(t.amount) %>円</td>
+        <td class="px-4 py-2"><%= t.destination_account_name %></td>
+        <td class="px-4 py-2"><%= t.transfer_date %></td>
+        <td class="px-4 py-2"><%= l(t.created_at, format: :short) rescue t.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%== pagy_nav(@pagy) if @pagy.pages > 1 %>

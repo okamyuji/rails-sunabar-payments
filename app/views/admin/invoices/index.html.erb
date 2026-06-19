@@ -1,0 +1,37 @@
+<h1 class="text-2xl font-bold mb-4">請求書一覧</h1>
+<div class="mb-4 flex gap-2">
+  <%= link_to "新規作成", new_admin_invoice_path, class: "px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+  <%= link_to "全て", admin_invoices_path, class: "px-3 py-1 rounded #{params[:status].blank? ? 'bg-gray-900 text-white' : 'bg-gray-200'}" %>
+  <% %w[open partial cleared excess].each do |s| %>
+    <%= link_to s, admin_invoices_path(status: s), class: "px-3 py-1 rounded #{params[:status] == s ? 'bg-gray-900 text-white' : 'bg-gray-200'}" %>
+  <% end %>
+</div>
+<table class="w-full bg-white rounded-lg shadow">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="px-4 py-2 text-left">ID</th>
+      <th class="px-4 py-2 text-left">状態</th>
+      <th class="px-4 py-2 text-right">請求額</th>
+      <th class="px-4 py-2 text-right">入金済</th>
+      <th class="px-4 py-2 text-left">摘要</th>
+      <th class="px-4 py-2 text-left">期限</th>
+      <th class="px-4 py-2"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invoices.each do |inv| %>
+      <tr class="border-t hover:bg-gray-50">
+        <td class="px-4 py-2"><%= inv.id.to_s[0..7] %></td>
+        <td class="px-4 py-2"><span class="px-2 py-1 rounded text-xs bg-gray-200"><%= inv.status %></span></td>
+        <td class="px-4 py-2 text-right"><%= number_with_delimiter(inv.amount) %>円</td>
+        <td class="px-4 py-2 text-right"><%= number_with_delimiter(inv.paid_amount) %>円</td>
+        <td class="px-4 py-2"><%= inv.description %></td>
+        <td class="px-4 py-2"><%= inv.due_date %></td>
+        <td class="px-4 py-2">
+          <%= link_to "編集", edit_admin_invoice_path(inv), class: "text-blue-600 hover:underline" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%== pagy_nav(@pagy) if @pagy.pages > 1 %>

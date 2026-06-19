@@ -1,0 +1,9 @@
+sunabar_main:
+  id: !binary |-
+    AZOl4bLD1OX2p7jJ0OHyow==
+  sunabar_account_id: "ACC-TEST-001"
+  account_number: "1234567"
+  branch_code: "101"
+  account_name: "テスト口座"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

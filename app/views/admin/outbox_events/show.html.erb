@@ -1,0 +1,20 @@
+<h1 class="text-2xl font-bold mb-4">Outboxイベント詳細</h1>
+<div class="bg-white rounded-lg shadow p-6">
+  <dl class="grid grid-cols-2 gap-4">
+    <div><dt class="text-sm text-gray-500">ID</dt><dd><%= @outbox_event.id %></dd></div>
+    <div><dt class="text-sm text-gray-500">集約</dt><dd><%= @outbox_event.aggregate_type %>#<%= @outbox_event.aggregate_id %></dd></div>
+    <div><dt class="text-sm text-gray-500">イベント種別</dt><dd><%= @outbox_event.event_type %></dd></div>
+    <div><dt class="text-sm text-gray-500">状態</dt><dd><%= @outbox_event.status %></dd></div>
+    <div><dt class="text-sm text-gray-500">試行回数</dt><dd><%= @outbox_event.attempt_count %>/<%= @outbox_event.max_attempts %></dd></div>
+    <div><dt class="text-sm text-gray-500">次回試行</dt><dd><%= @outbox_event.next_attempt_at %></dd></div>
+    <div><dt class="text-sm text-gray-500">送信日時</dt><dd><%= @outbox_event.sent_at || "-" %></dd></div>
+    <div><dt class="text-sm text-gray-500">作成日時</dt><dd><%= @outbox_event.created_at %></dd></div>
+    <% if @outbox_event.last_error.present? %>
+      <div class="col-span-2"><dt class="text-sm text-gray-500">最終エラー</dt><dd class="text-red-600"><%= @outbox_event.last_error %></dd></div>
+    <% end %>
+    <div class="col-span-2">
+      <dt class="text-sm text-gray-500">ペイロード</dt>
+      <dd><pre class="bg-gray-100 p-3 rounded text-sm overflow-auto"><%= JSON.pretty_generate(@outbox_event.payload) %></pre></dd>
+    </div>
+  </dl>
+</div>

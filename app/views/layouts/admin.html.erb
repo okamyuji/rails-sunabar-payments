@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sunabar管理画面</title>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-gray-900 text-white px-6 py-3 flex gap-6 items-center">
+    <span class="font-bold text-lg">sunabar管理</span>
+    <%= link_to "ダッシュボード", admin_path, class: "hover:text-gray-300" %>
+    <%= link_to "振込", admin_transfers_path, class: "hover:text-gray-300" %>
+    <%= link_to "請求書", admin_invoices_path, class: "hover:text-gray-300" %>
+    <%= link_to "消込", admin_reconciliations_path, class: "hover:text-gray-300" %>
+    <%= link_to "Outbox", admin_outbox_events_path, class: "hover:text-gray-300" %>
+  </nav>
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <% if notice.present? %>
+      <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4"><%= notice %></div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="bg-red-100 text-red-800 px-4 py-2 rounded mb-4"><%= alert %></div>
+    <% end %>
+    <%= yield %>
+  </main>
+</body>
+</html>

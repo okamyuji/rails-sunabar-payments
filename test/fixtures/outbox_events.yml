@@ -1,0 +1,24 @@
+pending_event:
+  aggregate_type: "Transfer"
+  aggregate_id: "01935e1b-2c3d-71e5-f6a7-b8c9d0e1f2a4"
+  event_type: "TransferRequested"
+  payload: '{"transfer_id":"01935e1b-2c3d-71e5-f6a7-b8c9d0e1f2a4"}'
+  status: "pending"
+  attempt_count: 0
+  max_attempts: 10
+  next_attempt_at: <%= 1.minute.ago %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+sent_event:
+  aggregate_type: "Transfer"
+  aggregate_id: "01935e1b-2c3d-71e5-f6a7-b8c9d0e1f2b5"
+  event_type: "TransferSettled"
+  payload: '{"transfer_id":"01935e1b-2c3d-71e5-f6a7-b8c9d0e1f2b5"}'
+  status: "sent"
+  attempt_count: 1
+  max_attempts: 10
+  next_attempt_at: <%= Time.current %>
+  sent_at: <%= Time.current %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

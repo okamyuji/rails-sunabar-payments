@@ -1,0 +1,10 @@
+test_va:
+  id: !binary |-
+    AZOl4bLD1OX2p7jJ0OHyvA==
+  account_id: !binary |-
+    AZOl4bLD1OX2p7jJ0OHyow==
+  sunabar_va_id: "VA-TEST-001"
+  va_number: "9876543"
+  va_name: "テスト仮想口座"
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

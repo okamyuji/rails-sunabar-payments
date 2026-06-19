@@ -1,0 +1,13 @@
+open_invoice:
+  id: !binary |-
+    AZOl4bLD1OX2p7jJ0OHywA==
+  virtual_account_id: !binary |-
+    AZOl4bLD1OX2p7jJ0OHyvA==
+  amount: 10000
+  paid_amount: 0
+  status: "open"
+  description: "テスト請求書"
+  due_date: <%= Date.current + 30 %>
+  lock_version: 0
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
