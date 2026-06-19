@@ -15,7 +15,11 @@ module Api
     end
 
     def create
-      transfer = Transfer.find_or_create_idempotent!(transfer_params)
+      account = Account.find(params[:transfer][:account_id])
+      transfer =
+        Transfer.find_or_create_idempotent!(
+          transfer_params.merge(account: account)
+        )
       status = transfer.previously_new_record? ? :created : :ok
       render json: transfer, status: status
     end
@@ -25,7 +29,6 @@ module Api
     def transfer_params
       params.require(:transfer).permit(
         :app_request_id,
-        :account_id,
         :destination_bank_code,
         :destination_branch_code,
         :destination_account_number,

@@ -5,9 +5,8 @@ module Api
     end
 
     def create
-      permitted = params.permit(:account_id, :va_name)
-      account = Account.find(permitted[:account_id])
-      va = VirtualAccount.issue!(account: account, va_name: permitted[:va_name])
+      account = Account.find(params[:account_id])
+      va = VirtualAccount.issue!(account: account, va_name: params[:va_name])
       render json: va, status: :created
     end
   end
