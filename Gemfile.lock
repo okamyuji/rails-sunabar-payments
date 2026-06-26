@@ -203,10 +203,6 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.4-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.19.4-arm-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.19.4-arm-linux-musl)
-      racc (~> 1.4)
     nokogiri (1.19.4-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.19.4-x86_64-linux-gnu)
@@ -283,7 +279,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.4.2)
-    rbi (0.3.13)
+    rbi (0.3.14)
       prism (~> 1.0)
       rbs (>= 4.0.1)
     rbs (4.0.3)
@@ -330,10 +326,9 @@ GEM
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
-    rubydex (0.2.5)
-    rubydex (0.2.5-aarch64-linux)
-    rubydex (0.2.5-arm64-darwin)
-    rubydex (0.2.5-x86_64-linux)
+    rubydex (0.2.6-aarch64-linux)
+    rubydex (0.2.6-arm64-darwin)
+    rubydex (0.2.6-x86_64-linux)
     rubyzip (3.4.0)
     securerandom (0.4.1)
     selenium-webdriver (4.45.0)
@@ -368,10 +363,10 @@ GEM
     sorbet-static-and-runtime (0.6.13308)
       sorbet (= 0.6.13308)
       sorbet-runtime (= 0.6.13308)
-    spoom (1.7.16)
+    spoom (1.8.2)
       erubi (>= 1.10.0)
       prism (>= 0.28.0)
-      rbi (>= 0.3.3)
+      rbi (>= 0.3.14)
       rbs (>= 4.0.0.dev.5)
       rexml (>= 3.2.6)
       sorbet-static-and-runtime (>= 0.5.10187)
@@ -395,7 +390,7 @@ GEM
     tailwindcss-ruby (4.3.1-arm64-darwin)
     tailwindcss-ruby (4.3.1-x86_64-linux-gnu)
     tailwindcss-ruby (4.3.1-x86_64-linux-musl)
-    tapioca (0.19.1)
+    tapioca (0.19.2)
       benchmark
       bundler (>= 2.2.25)
       netrc (>= 0.11.0)
@@ -404,7 +399,7 @@ GEM
       require-hooks (>= 0.2.2)
       rubydex (>= 0.1.0.beta10)
       sorbet-static-and-runtime (>= 0.6.12698)
-      spoom (>= 1.7.9)
+      spoom (>= 1.7.16)
       thor (>= 1.2.0)
       tsort
     thor (1.5.0)
@@ -443,8 +438,6 @@ PLATFORMS
   aarch64-linux
   aarch64-linux-gnu
   aarch64-linux-musl
-  arm-linux-gnu
-  arm-linux-musl
   arm64-darwin-25
   x86_64-linux
   x86_64-linux-gnu
@@ -558,8 +551,6 @@ CHECKSUMS
   nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
   nokogiri (1.19.4-aarch64-linux-gnu) sha256=1269fb644a6de405057a53dd5c762b1209b43ca7424f839454d3dbc677c31a8f
   nokogiri (1.19.4-aarch64-linux-musl) sha256=35c65b9ce72b3bb03207bdbe7067915019dc18c1b9b59139684bd6690fdd01af
-  nokogiri (1.19.4-arm-linux-gnu) sha256=a301313e38bb065d68239e79734bcd6f56fb6efaacebde29e9abf2a4735340ca
-  nokogiri (1.19.4-arm-linux-musl) sha256=588923c101bcfa78869734d247d25b598674323e7f22474fc468f6e5647311eb
   nokogiri (1.19.4-arm64-darwin) sha256=a46db9853286e6597b36ebc6953817d15acf3a299583eb3f89fdc6f91dd63527
   nokogiri (1.19.4-x86_64-linux-gnu) sha256=379fae440b28915e3f19d752ce2dcf8465ed2b2fbefd2a7ca0dd497bc981a06a
   nokogiri (1.19.4-x86_64-linux-musl) sha256=17dfb7c1fa194ae02fbf7c51a7afc8d278045ab3fdacfd86f91d02d7b274470b
@@ -588,7 +579,7 @@ CHECKSUMS
   railties (8.1.3) sha256=913eb0e0cb520aac687ffd74916bd726d48fa21f47833c6292576ef6a286de22
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.4.2) sha256=cb825b2bd5f1f8e91ca37bddb4b9aaf345551b4731da62949be002fa89283701
-  rbi (0.3.13) sha256=6afd53a574268abcc71daed4c025673561f27a990b3b087e7889e8b073ab2d7a
+  rbi (0.3.14) sha256=932ed904adbb5ca645c285c8b36da1b7ff6321ec1870d187d6325248cb637658
   rbs (4.0.3) sha256=5a7bf70e2628549d9a1f44eae447b2cfe55968a9c60cfff52693a4bdcc020e14
   rdoc (7.2.0) sha256=8650f76cd4009c3b54955eb5d7e3a075c60a57276766ebf36f9085e8c9f23192
   regexp_parser (2.12.0) sha256=35a916a1d63190ab5c9009457136ae5f3c0c7512d60291d0d1378ba18ce08ebb
@@ -602,10 +593,9 @@ CHECKSUMS
   rubocop-rails (2.35.4) sha256=3aeaa325439c89950e8327565682ea794065d08e2ecbbfe95032bfa295a35df5
   rubocop-rails-omakase (1.1.0) sha256=2af73ac8ee5852de2919abbd2618af9c15c19b512c4cfc1f9a5d3b6ef009109d
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
-  rubydex (0.2.5) sha256=0a2112d62603f6f0ae4dfa9b963cf7617331fffae35740f7856a831cbc7f1580
-  rubydex (0.2.5-aarch64-linux) sha256=7cbc1cd8f926bd3138c7cdd5434f5d3140a287394ca7c4f4e9d93b4b900f20ce
-  rubydex (0.2.5-arm64-darwin) sha256=487cab3df687ccb2f3360c23236300320d402b1042643054cd4d09221e13915a
-  rubydex (0.2.5-x86_64-linux) sha256=4b05f0424b867071c41a1b2ac7d91e965829a422c806a532d43ffdb45ec33604
+  rubydex (0.2.6-aarch64-linux) sha256=431447309420ef75ac310ef45d11eed1652ff53e8d7b82cef003bf6309141ddf
+  rubydex (0.2.6-arm64-darwin) sha256=ffc5bc493e17114228b88cf19fa828647fe1113d7ef690fa3a285e097c7c4fa6
+  rubydex (0.2.6-x86_64-linux) sha256=992d3513686bb1dd913da55267a14be334ea9fb2bc181b70a97b793700382c47
   rubyzip (3.4.0) sha256=6de39bc9eba302b635a476d16c9e16b0872ad24517c2f98f2b3a7ea23caff57b
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   selenium-webdriver (4.45.0) sha256=ecac65a4df86ac6f7d707e6dcbacaa9c08b6cf2b966babecfb9653c5aa13e2d1
@@ -620,7 +610,7 @@ CHECKSUMS
   sorbet-static (0.6.13308-universal-darwin) sha256=0acc34dfdde8fd7215dfdfcf7445ad0a28b707acaac487784bc9e1a69d90f4dd
   sorbet-static (0.6.13308-x86_64-linux) sha256=4e5491f999cc556a5fa71996fc5fd2be36172d2b45c57d3a9c7b69650e8cf2e4
   sorbet-static-and-runtime (0.6.13308) sha256=a01f2c7817c0800858b59b3a07b3b63d29245e5a185d4790d7bab9f3f3faa39e
-  spoom (1.7.16) sha256=b6033d1aaede800ef37505474d260d57a02fa63364b4725ea40b6f606e932d59
+  spoom (1.8.2) sha256=1253232b9d85ed140c9d5337ad2c74f03af89a70e3c602f2b2438eba34d0bd2f
   sshkit (1.25.0) sha256=c8c6543cdb60f91f1d277306d585dd11b6a064cb44eab0972827e4311ff96744
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1
   syntax_tree (6.3.0) sha256=56e25a9692c798ec94c5442fe94c5e94af76bef91edc8bb02052cbdecf35f13d
@@ -631,7 +621,7 @@ CHECKSUMS
   tailwindcss-ruby (4.3.1-arm64-darwin) sha256=477ef19dde7fa4db32a0f916c02398e5fcc6af7f18d5e773012d93d6b96ecfa3
   tailwindcss-ruby (4.3.1-x86_64-linux-gnu) sha256=22a208da614b7767cee504ab9dae2ab0d8299fdf633c045c6f8357de81d0506f
   tailwindcss-ruby (4.3.1-x86_64-linux-musl) sha256=1adcb5df5f9a6a85a81dc9e5102ce7e4f7a1415f477f1a6b22b52ee49c351ee6
-  tapioca (0.19.1) sha256=5de94d458950897ffe3d4e86a21eec48bb6a8775af85f80b1486b7ae7ba51823
+  tapioca (0.19.2) sha256=938731b07811aee8d23871b1aee8861d464fbaf2cfffbf79a62b0c869a5120ec
   thor (1.5.0) sha256=e3a9e55fe857e44859ce104a84675ab6e8cd59c650a49106a05f55f136425e73
   thruster (0.1.21) sha256=dc67928f36e5894844579a95e45637a5091db7a7ea05468ee8c2c6eb0a3f77cf
   thruster (0.1.21-aarch64-linux) sha256=f5aff78fb7a6431ed3d6ab4bde03a89c461e9a73981dbc97d6990d85c3db235c
