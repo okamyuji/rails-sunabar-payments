@@ -4,68 +4,23 @@ on:
   push:
   pull_request:
 
-env:
-  RUBY_VERSION: "3.4"
-
 permissions:
   contents: read
 
 jobs:
   security:
-    runs-on: ubuntu-latest
+    uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1
     permissions:
       contents: read
       pull-requests: write
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-          bundler-cache: true
-      - run: bin/brakeman --no-pager
-      - run: bin/bundler-audit
-      - name: gitleaks
-        uses: gitleaks/gitleaks-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-          bundler-cache: true
-      - run: find app lib -name "*.rb" | xargs bundle exec stree check
-      - run: bin/rubocop -f github
-
-  test:
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: rails_sunabar_payments_test
-        ports: ["3306:3306"]
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-    env:
-      RAILS_ENV: test
-      DB_HOST: 127.0.0.1
-      DB_PASSWORD: password
-      COVERAGE: true
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ env.RUBY_VERSION }}
-          bundler-cache: true
-      - run: bundle exec rails db:setup
-      - run: bundle exec rails test
-      - run: bundle exec rails test:system
+  rails-ci:
+    uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
+    with:
+      lint-command: |
+        find app lib -name "*.rb" | xargs bundle exec stree check
+        bin/rubocop -f github
+      with-mysql: true
+      # database.yml は DB_PASSWORD を env から読む（デフォルト "password"）。
+      # 共通ワークフローの MySQL 8.4 は空パスワード運用のため DB_PASSWORD= で上書きする。
+      test-command: "RAILS_ENV=test DB_PASSWORD= COVERAGE=true bin/rails db:setup test test:system"
