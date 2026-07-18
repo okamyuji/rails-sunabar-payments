@@ -5,7 +5,8 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   setup { WebMock.allow_net_connect!(allow_localhost: true) }
 
-  teardown { WebMock.disable_net_connect! }
+  # ladder: chromedriver(127.0.0.1)への終了時通信をat_exitでも許可するためallow_localhostを維持する
+  teardown { WebMock.disable_net_connect!(allow_localhost: true) }
 
   private
 
