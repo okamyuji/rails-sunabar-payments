@@ -4,8 +4,9 @@ if ENV["COVERAGE"]
   require "simplecov"
   SimpleCov.start "rails" do
     minimum_coverage 80
-    # rails testコマンドとruby -Itestの両方で正しくマージされるようcommand_nameを統一
-    command_name "Unit Tests"
+    # simplecov 1.xでは同名command_nameの結果がマージされず上書きされるため、
+    # test / test:system の各プロセスで名前を分けて結果をマージさせる
+    command_name "tests-#{Process.pid}"
   end
 end
 
