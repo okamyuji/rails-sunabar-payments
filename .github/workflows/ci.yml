@@ -16,6 +16,9 @@ jobs:
 
   rails-ci:
     uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
+    permissions:
+      contents: read
+      pull-requests: write
     with:
       lint-command: |
         find app lib -name "*.rb" | xargs bundle exec stree check
@@ -24,3 +27,4 @@ jobs:
       # database.yml は DB_PASSWORD を env から読む（デフォルト "password"）。
       # 共通ワークフローの MySQL 8.4 は空パスワード運用のため DB_PASSWORD= で上書きする。
       test-command: "RAILS_ENV=test DB_PASSWORD= COVERAGE=true bin/rails db:setup test test:system"
+      dependabot-recreate: true
