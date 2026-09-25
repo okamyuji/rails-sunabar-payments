@@ -12,7 +12,6 @@ jobs:
     uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1
     permissions:
       contents: read
-      pull-requests: write
 
   rails-ci:
     uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
