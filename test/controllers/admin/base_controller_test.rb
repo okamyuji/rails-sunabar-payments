@@ -78,4 +78,40 @@ class Admin::BaseControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unauthorized
   end
+
+  def load_admin_credentials_initializer
+    load Rails.root.join("config/initializers/admin_credentials.rb")
+  end
+
+  test "productionでADMIN_USERが未設定なら起動時チェックが失敗する" do
+    error =
+      with_admin_env("production", nil, "s3cret") do
+        assert_raises(RuntimeError) { load_admin_credentials_initializer }
+      end
+
+    assert_equal "ADMIN_USER未設定", error.message
+  end
+
+  test "productionでADMIN_PASSWORDが空なら起動時チェックが失敗する" do
+    error =
+      with_admin_env("production", "ops", "") do
+        assert_raises(RuntimeError) { load_admin_credentials_initializer }
+      end
+
+    assert_equal "ADMIN_PASSWORD未設定", error.message
+  end
+
+  test "productionで両方設定済みなら起動時チェックは通る" do
+    with_admin_env("production", "ops", "s3cret") do
+      assert_nothing_raised { load_admin_credentials_initializer }
+    end
+  end
+
+  test "stagingとdevelopmentでは未設定でも起動時チェックは通る" do
+    %w[staging development].each do |env|
+      with_admin_env(env) do
+        assert_nothing_raised { load_admin_credentials_initializer }
+      end
+    end
+  end
 end
