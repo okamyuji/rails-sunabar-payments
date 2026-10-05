@@ -1,5 +1,4 @@
 require "test_helper"
-require_relative "../../app/handlers/check_transfer_status"
 
 class CheckTransferStatusTest < ActiveSupport::TestCase
   def setup

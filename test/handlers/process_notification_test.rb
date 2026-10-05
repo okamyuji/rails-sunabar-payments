@@ -1,5 +1,4 @@
 require "test_helper"
-require_relative "../../app/handlers/process_notification"
 
 class ProcessNotificationTest < ActiveSupport::TestCase
   def create_event(event_type: "TransferSettled")
