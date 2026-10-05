@@ -11,20 +11,31 @@ class Admin::BaseControllerTest < ActionDispatch::IntegrationTest
     }
   end
 
-  def with_admin_env(rails_env, user = nil, password = nil, build_dummy: nil)
+  ENV_KEYS = %w[
+    ADMIN_USER
+    ADMIN_PASSWORD
+    API_TOKEN
+    SECRET_KEY_BASE_DUMMY
+  ].freeze
+
+  def with_admin_env(
+    rails_env,
+    user = nil,
+    password = nil,
+    api_token = nil,
+    build_dummy: nil
+  )
     original_env = Rails.env
-    original_vars =
-      ENV.to_h.slice("ADMIN_USER", "ADMIN_PASSWORD", "SECRET_KEY_BASE_DUMMY")
+    original_vars = ENV.to_h.slice(*ENV_KEYS)
     Rails.env = rails_env
     ENV["ADMIN_USER"] = user
     ENV["ADMIN_PASSWORD"] = password
+    ENV["API_TOKEN"] = api_token
     ENV["SECRET_KEY_BASE_DUMMY"] = build_dummy
     yield
   ensure
     Rails.env = original_env
-    %w[ADMIN_USER ADMIN_PASSWORD SECRET_KEY_BASE_DUMMY].each do |key|
-      ENV[key] = original_vars[key]
-    end
+    ENV_KEYS.each { |key| ENV[key] = original_vars[key] }
   end
 
   test "developmentで資格情報が未設定なら既定のadmin/changemeで入れる" do
@@ -103,9 +114,35 @@ class Admin::BaseControllerTest < ActionDispatch::IntegrationTest
     assert_equal "ADMIN_PASSWORD未設定", error.message
   end
 
-  test "productionで両方設定済みなら起動時チェックは通る" do
-    with_admin_env("production", "ops", "s3cret") do
+  test "productionで資格情報とAPIトークンがすべて設定済みなら起動時チェックは通る" do
+    with_admin_env("production", "ops", "s3cret", SecureRandom.hex(16)) do
       assert_nothing_raised { load_admin_credentials_initializer }
+    end
+  end
+
+  test "productionでAPI_TOKENが未設定なら起動時チェックが失敗する" do
+    error =
+      with_admin_env("production", "ops", "s3cret") do
+        assert_raises(RuntimeError) { load_admin_credentials_initializer }
+      end
+
+    assert_equal "API_TOKEN未設定", error.message
+  end
+
+  test "productionでAPI_TOKENが空なら起動時チェックが失敗する" do
+    error =
+      with_admin_env("production", "ops", "s3cret", "") do
+        assert_raises(RuntimeError) { load_admin_credentials_initializer }
+      end
+
+    assert_equal "API_TOKEN未設定", error.message
+  end
+
+  test "productionでもassets:precompileの実行中はAPI_TOKENの未設定で止めない" do
+    with_rake_top_level_tasks(["assets:precompile"]) do
+      with_admin_env("production", "ops", "s3cret") do
+        assert_nothing_raised { load_admin_credentials_initializer }
+      end
     end
   end
 
