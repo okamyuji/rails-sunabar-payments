@@ -109,10 +109,32 @@ class Admin::BaseControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "productionでもSECRET_KEY_BASE_DUMMYがあるビルド工程では起動時チェックを飛ばす" do
-    with_admin_env("production", build_dummy: "1") do
-      assert_nothing_raised { load_admin_credentials_initializer }
+  def with_rake_top_level_tasks(tasks)
+    require "rake"
+    original = Rake.application.top_level_tasks
+    Rake.application.instance_variable_set(:@top_level_tasks, tasks)
+    yield
+  ensure
+    Rake.application.instance_variable_set(:@top_level_tasks, original)
+  end
+
+  test "productionでもassets:precompileの実行中は起動時チェックを飛ばす" do
+    with_rake_top_level_tasks(["assets:precompile"]) do
+      with_admin_env("production", build_dummy: "1") do
+        assert_nothing_raised { load_admin_credentials_initializer }
+      end
     end
+  end
+
+  test "productionで実行時にSECRET_KEY_BASE_DUMMYが残っていても起動時チェックは外れない" do
+    error =
+      with_rake_top_level_tasks([]) do
+        with_admin_env("production", build_dummy: "1") do
+          assert_raises(RuntimeError) { load_admin_credentials_initializer }
+        end
+      end
+
+    assert_equal "ADMIN_USER未設定", error.message
   end
 
   test "stagingとdevelopmentでは未設定でも起動時チェックは通る" do
