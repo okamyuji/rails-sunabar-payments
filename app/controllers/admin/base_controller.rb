@@ -3,15 +3,27 @@ module Admin
     include Pagy::Method
     layout "admin"
 
-    http_basic_authenticate_with(
-      name:
-        ENV.fetch("ADMIN_USER") do
-          Rails.env.production? ? raise("ADMIN_USER未設定") : "admin"
-        end,
-      password:
-        ENV.fetch("ADMIN_PASSWORD") do
-          Rails.env.production? ? raise("ADMIN_PASSWORD未設定") : "changeme"
-        end
-    )
+    before_action :authenticate_admin!
+
+    private
+
+    # 既定の資格情報は development/test だけで使う。staging なども含め、それ以外で未設定なら全員を拒否する。
+    def authenticate_admin!
+      name, password = admin_credentials
+      return request_http_basic_authentication if name.blank? || password.blank?
+
+      http_basic_authenticate_or_request_with(name:, password:)
+    end
+
+    def admin_credentials
+      if Rails.env.local?
+        [
+          ENV.fetch("ADMIN_USER", "admin"),
+          ENV.fetch("ADMIN_PASSWORD", "changeme")
+        ]
+      else
+        [ENV["ADMIN_USER"], ENV["ADMIN_PASSWORD"]]
+      end
+    end
   end
 end

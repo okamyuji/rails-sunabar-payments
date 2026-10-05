@@ -1,5 +1,4 @@
 require "test_helper"
-require_relative "../../app/handlers/send_to_sunabar"
 
 class SendToSunabarTest < ActiveSupport::TestCase
   def setup

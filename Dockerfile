@@ -52,7 +52,9 @@ COPY . .
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# SECRET_KEY_BASE_DUMMY を付けると Rails が tmp/local_secret.txt を書くので、イメージに固定の鍵を残さないよう消す
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile && \
+    rm -f tmp/local_secret.txt
 
 
 
