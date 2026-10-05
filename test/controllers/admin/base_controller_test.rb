@@ -11,18 +11,20 @@ class Admin::BaseControllerTest < ActionDispatch::IntegrationTest
     }
   end
 
-  def with_admin_env(rails_env, user = nil, password = nil)
+  def with_admin_env(rails_env, user = nil, password = nil, build_dummy: nil)
     original_env = Rails.env
-    original_user = ENV["ADMIN_USER"]
-    original_password = ENV["ADMIN_PASSWORD"]
+    original_vars =
+      ENV.to_h.slice("ADMIN_USER", "ADMIN_PASSWORD", "SECRET_KEY_BASE_DUMMY")
     Rails.env = rails_env
     ENV["ADMIN_USER"] = user
     ENV["ADMIN_PASSWORD"] = password
+    ENV["SECRET_KEY_BASE_DUMMY"] = build_dummy
     yield
   ensure
     Rails.env = original_env
-    ENV["ADMIN_USER"] = original_user
-    ENV["ADMIN_PASSWORD"] = original_password
+    %w[ADMIN_USER ADMIN_PASSWORD SECRET_KEY_BASE_DUMMY].each do |key|
+      ENV[key] = original_vars[key]
+    end
   end
 
   test "developmentで資格情報が未設定なら既定のadmin/changemeで入れる" do
@@ -103,6 +105,12 @@ class Admin::BaseControllerTest < ActionDispatch::IntegrationTest
 
   test "productionで両方設定済みなら起動時チェックは通る" do
     with_admin_env("production", "ops", "s3cret") do
+      assert_nothing_raised { load_admin_credentials_initializer }
+    end
+  end
+
+  test "productionでもSECRET_KEY_BASE_DUMMYがあるビルド工程では起動時チェックを飛ばす" do
+    with_admin_env("production", build_dummy: "1") do
       assert_nothing_raised { load_admin_credentials_initializer }
     end
   end
