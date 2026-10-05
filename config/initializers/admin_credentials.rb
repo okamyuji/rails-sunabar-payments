@@ -3,9 +3,10 @@
 # staging などは起動させ、Admin::BaseController#authenticate_admin! で全員を拒否する。
 # Dockerfile の assets:precompile は本番の秘密を渡さずに production で起動するので、そこでだけ止めない。
 # SECRET_KEY_BASE_DUMMY で判定すると、実行時に残ったときも黙って検査が外れるため、実行中の rake タスク名で判定する。
+# 並べて渡した db:prepare なども検査なしで走らないよう、precompile 単独のときだけに限る。
 precompiling_assets =
   defined?(Rake.application) &&
-    Rake.application.top_level_tasks.include?("assets:precompile")
+    Rake.application.top_level_tasks == ["assets:precompile"]
 
 if Rails.env.production? && !precompiling_assets
   %w[ADMIN_USER ADMIN_PASSWORD API_TOKEN].each do |key|

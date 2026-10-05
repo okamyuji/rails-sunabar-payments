@@ -163,6 +163,17 @@ class Admin::BaseControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "productionでassets:precompileを別のタスクと並べたら起動時チェックは走る" do
+    error =
+      with_rake_top_level_tasks(%w[assets:precompile db:prepare]) do
+        with_admin_env("production", build_dummy: "1") do
+          assert_raises(RuntimeError) { load_admin_credentials_initializer }
+        end
+      end
+
+    assert_equal "ADMIN_USER未設定", error.message
+  end
+
   test "productionで実行時にSECRET_KEY_BASE_DUMMYが残っていても起動時チェックは外れない" do
     error =
       with_rake_top_level_tasks([]) do
