@@ -32,54 +32,21 @@ module Api
              status: :unauthorized
     end
 
-    def not_found(_e)
-      render json: {
-               error: {
-                 code: "not_found",
-                 message: "リソースが見つかりません"
-               }
-             },
-             status: :not_found
-    end
+    def not_found(_e) = render_error("not_found", "リソースが見つかりません", :not_found)
 
-    def unprocessable(e)
-      render json: {
-               error: {
-                 code: "validation_error",
-                 message: e.message
-               }
-             },
-             status: :unprocessable_entity
-    end
+    def unprocessable(e) =
+      render_error("validation_error", e.message, :unprocessable_entity)
 
-    def stale_object(_e)
-      render json: {
-               error: {
-                 code: "stale_object",
-                 message: "リソースが更新されています。再取得してください"
-               }
-             },
-             status: :conflict
-    end
+    def stale_object(_e) =
+      render_error("stale_object", "リソースが更新されています。再取得してください", :conflict)
 
-    def invalid_reference(_e)
-      render json: {
-               error: {
-                 code: "validation_error",
-                 message: "参照先が存在しません"
-               }
-             },
-             status: :unprocessable_entity
-    end
+    def invalid_reference(_e) =
+      render_error("validation_error", "参照先が存在しません", :unprocessable_entity)
 
-    def conflict(e)
-      render json: {
-               error: {
-                 code: "conflict",
-                 message: e.message
-               }
-             },
-             status: :conflict
+    def conflict(e) = render_error("conflict", e.message, :conflict)
+
+    def render_error(code, message, status)
+      render json: { error: { code:, message: } }, status:
     end
 
     def set_request_id
