@@ -23,13 +23,7 @@ module Api
         return
       end
 
-      render json: {
-               error: {
-                 code: "unauthorized",
-                 message: "無効なAPIトークン"
-               }
-             },
-             status: :unauthorized
+      render_error("unauthorized", "無効なAPIトークン", :unauthorized)
     end
 
     def not_found(_e) = render_error("not_found", "リソースが見つかりません", :not_found)

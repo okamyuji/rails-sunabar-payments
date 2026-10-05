@@ -104,4 +104,23 @@ class Api::BaseControllerTest < ActionDispatch::IntegrationTest
       body
     )
   end
+
+  test "APIトークンが一致しないと401とunauthorizedを返す" do
+    original = ENV["API_TOKEN"]
+    ENV["API_TOKEN"] = "expected-token"
+
+    get api_accounts_path,
+        headers: {
+          "Authorization" => "Bearer wrong-token"
+        },
+        as: :json
+
+    assert_equal 401, response.status
+    assert_equal(
+      { "error" => { "code" => "unauthorized", "message" => "無効なAPIトークン" } },
+      JSON.parse(response.body)
+    )
+  ensure
+    ENV["API_TOKEN"] = original
+  end
 end
