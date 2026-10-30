@@ -193,19 +193,22 @@ class TransferTest < ActiveSupport::TestCase
 
   test "by_date_rangeは範囲外のレコードを除外する" do
     # Arrange
-    Transfer.create_with_outbox!(
-      valid_params.merge(transfer_date: Date.new(2026, 6, 1))
-    )
+    before_range =
+      Transfer.create_with_outbox!(
+        valid_params.merge(transfer_date: Date.new(2026, 6, 1))
+      )
+    after_range =
+      Transfer.create_with_outbox!(
+        valid_params.merge(transfer_date: Date.new(2026, 6, 30))
+      )
 
     # Act
     results =
       Transfer.by_date_range(Date.new(2026, 6, 10), Date.new(2026, 6, 20))
 
     # Assert
-    results.each do |t|
-      assert t.transfer_date >= Date.new(2026, 6, 10)
-      assert t.transfer_date <= Date.new(2026, 6, 20)
-    end
+    assert_not_includes results, before_range
+    assert_not_includes results, after_range
   end
 
   # --- lock_version (optimistic locking) ---
